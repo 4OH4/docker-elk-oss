@@ -9,12 +9,9 @@ Run the latest version of the [Elastic stack][elk-stack] with Docker and Docker 
 It gives you the ability to analyze any data set by using the searching/aggregation capabilities of Elasticsearch and
 the visualization power of Kibana.
 
-_:information_source: ~~The Docker images backing this stack include [X-Pack][xpack] with [paid features][paid-features]
-enabled by default (see [How to disable paid features](#how-to-disable-paid-features) to disable them). **The [trial
-license][trial-license] is valid for 30 days**. After this license expires, you can continue using the free features
-seamlessly, without losing any data._~~
+~~The Docker images backing this stack include X-Pack with paid features enabled by default (see How to disable paid features to disable them). The trial license is valid for 30 days. After this license expires, you can continue using the free features seamlessly, without losing any data.~~
 
-\*:information_source: This stack uses the pure open-source (OSS) Docker images, without any of the additional X-Pack features. If you want those, use the original repository that this repository is forked from: [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk)
+*:information_source: This stack uses the pure open-source (OSS) Docker images, without any of the additional X-Pack features. If you want those, use the original repository that this repository is forked from: [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk)
 
 Similarly, authentication is disabled - use for local development only.
 
@@ -168,54 +165,9 @@ $ docker-compose down -v
 
 ### Setting up user authentication
 
-Authentication is currently disabled - use for local development only.
-~~
-_:information_source: Refer to [How to disable paid features](#how-to-disable-paid-features) to disable authentication._
+**Authentication is currently disabled** - use for local development only.
 
-The stack is pre-configured with the following **privileged** bootstrap user:
-
-- user: _elastic_
-- password: _changeme_
-
-Although all stack components work out-of-the-box with this user, we strongly recommend using the unprivileged [built-in
-users][builtin-users] instead for increased security.
-
-1. Initialize passwords for built-in users
-
-   ```console
-   $ docker-compose exec -T elasticsearch bin/elasticsearch-setup-passwords auto --batch
-   ```
-
-   Passwords for all 6 built-in users will be randomly generated. Take note of them.
-
-1. Unset the bootstrap password (_optional_)
-
-   Remove the `ELASTIC_PASSWORD` environment variable from the `elasticsearch` service inside the Compose file
-   (`docker-compose.yml`). It is only used to initialize the keystore during the initial startup of Elasticsearch.
-
-1. Replace usernames and passwords in configuration files
-
-   Use the `kibana_system` user (`kibana` for releases <7.8.0) inside the Kibana configuration file
-   (`kibana/config/kibana.yml`) and the `logstash_system` user inside the Logstash configuration file
-   (`logstash/config/logstash.yml`) in place of the existing `elastic` user.
-
-   Replace the password for the `elastic` user inside the Logstash pipeline file (`logstash/pipeline/logstash.conf`).
-
-   _:information_source: Do not use the `logstash_system` user inside the Logstash **pipeline** file, it does not have
-   sufficient permissions to create indices. Follow the instructions at [Configuring Security in Logstash][ls-security]
-   to create a user with suitable roles._
-
-   See also the [Configuration](#configuration) section below.
-
-1. Restart Kibana and Logstash to apply changes
-
-   ```console
-   $ docker-compose restart kibana logstash
-   ```
-
-   _:information_source: Learn more about the security of the Elastic stack at [Tutorial: Getting started with
-   security][sec-tutorial]._
-   ~~
+If you need authentication, use the original repository that this repository is forked from: [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk).
 
 ### Injecting data
 
